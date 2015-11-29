@@ -11,37 +11,14 @@
         </StatusBar>
         <Grid>
             <Label Content="Select Freegal folder: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" ></Label>
-            <TextBox x:Name="freegalPath"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="134,14,60,0" TextChanged="freegalPath_TextChanged" />
+            <TextBox x:Name="freegalPath"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="134,14,60,0" 
+                     Text="{Binding Path=FreegalFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="freegalPath_TextChanged" />
             <Button x:Name="btnBrowse" Content="..." HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,14,10,0" Width="40" Click="btnBrowse_Click" />
-            <ListView x:Name="fileListView" HorizontalAlignment="Stretch" Height="200" Margin="10,50,10,0" VerticalAlignment="Top" SelectionMode="Single" SelectionChanged="fileListView_SelectionChanged" >
-                <!--<ListView.View>
-                    <GridView>
-                        <GridViewColumn/>
-                    </GridView>
-                </ListView.View>-->
+            <ListView x:Name="fileListView" HorizontalAlignment="Stretch" Height="200" Margin="10,50,10,0" VerticalAlignment="Top" SelectionMode="Single" ItemsSource="{Binding Path=MP3Files}" SelectionChanged="fileListView_SelectionChanged" >
             </ListView>
 
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="23" Margin="10,255,0,0" Content="Artist" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="23" Margin="120,255,0,0" Content="Title" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Height="23" Margin="250,255,0,0" Content="XNumber" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="23" Margin="330,255,0,0" Content="YNumber" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="23" Margin="380,255,0,0" Content="TitleNumber" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="23" Margin="440,255,0,0" Content="FileType" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="23" Margin="500,255,0,0" Content="SampleRate" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="23" Margin="560,255,0,0" Content="Ext" />
-            <TextBox x:Name="txtArtist"      HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="23" Margin="10,285,0,0" TextWrapping="NoWrap" Text="Artist" />
-            <TextBox x:Name="txtTitle"       HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="23" Margin="120,285,0,0" TextWrapping="NoWrap" Text="Title" />
-            <TextBox x:Name="txtXNumber"     HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Height="23" Margin="250,285,0,0" TextWrapping="NoWrap" Text="XNumber" />
-            <TextBox x:Name="txtYNumber"     HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="23" Margin="330,285,0,0" TextWrapping="NoWrap" Text="YNumber" />
-            <TextBox x:Name="txtTitleNumber" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="23" Margin="380,285,0,0" TextWrapping="NoWrap" Text="TitleNumber" />
-            <TextBox x:Name="txtFileType"    HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="23" Margin="440,285,0,0" TextWrapping="NoWrap" Text="FileType" />
-            <TextBox x:Name="txtSampleRate"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="23" Margin="500,285,0,0" TextWrapping="NoWrap" Text="SampleRate" />
-            <TextBox x:Name="txtExt"         HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="23" Margin="560,285,0,0" TextWrapping="NoWrap" Text="Ext" />
-
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="87" Height="23" Margin="10,320,0,0" Content="New Filename:" />
-            <TextBox x:Name="txtNewFileName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Height="23" Margin="105,322,0,0" TextWrapping="NoWrap" />
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="94" Height="23" Margin="10,350,0,0" Content="New Filename2:" />
-            <TextBox x:Name="txtNewFileName2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Height="23" Margin="112,352,0,0" TextWrapping="NoWrap" />
+            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Width="94" Height="23" Margin="10,255,0,0" Content="New Filename:" />
+            <TextBox x:Name="txtNewFileName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Height="23" Margin="112,257,0,0" TextWrapping="NoWrap" Text="{Binding Path=NewFileName}" />
         </Grid>
     </DockPanel>
 </Window>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Forms;
+using System.Windows.Controls;
+using System.Configuration;
+using System.ComponentModel;
 using TagLib;
 
 namespace ReFreegalW
@@ -9,15 +11,22 @@ namespace ReFreegalW
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private FileInfo[] _mp3Files;
-        public FileInfo[] MP3Files { get { return _mp3Files; } set { _mp3Files = value; } }
+        private string _filepath;
+        private string _newfilename;
+        public FileInfo[] MP3Files { get { return _mp3Files; } set { _mp3Files = value; OnPropertyChanged("MP3Files"); } }
+        public string FreegalFilePath { get { return _filepath; } set { _filepath = value; OnPropertyChanged("FreegalFilePath"); } }
+        public string NewFileName { get { return _newfilename; } set { _newfilename = value; OnPropertyChanged("NewFileName"); } }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
         {
             InitializeComponent();
-            freegalPath.Text = @"E:\TEMP\Music For Nitrous Oxide";
+            this.DataContext = this;
+            if (string.IsNullOrEmpty(FreegalFilePath = ConfigurationManager.AppSettings["FreegalFilePath"]))
+                FreegalFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
         }
 
 
@@ -26,66 +35,71 @@ namespace ReFreegalW
         /// </summary>
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {
-            FolderBrowserDialog browseDlg = new FolderBrowserDialog();
-            browseDlg.SelectedPath = freegalPath.Text;
+            System.Windows.Forms.FolderBrowserDialog browseDlg = new System.Windows.Forms.FolderBrowserDialog();
+            browseDlg.SelectedPath = FreegalFilePath;
             browseDlg.Description = "Select Freegal folder";
             browseDlg.ShowNewFolderButton = false;
             browseDlg.RootFolder = System.Environment.SpecialFolder.MyComputer;
             browseDlg.ShowDialog();
-            freegalPath.Text = browseDlg.SelectedPath;
+            FreegalFilePath = browseDlg.SelectedPath;
         }
 
 
         /// <summary>
         /// Update file list when folder is changed
         /// </summary>
-        private void freegalPath_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void freegalPath_TextChanged(object sender, TextChangedEventArgs e)
         {
-            DirectoryInfo di = new DirectoryInfo(freegalPath.Text);
-            MP3Files = di.GetFiles("*.mp3");
-            fileListView.ItemsSource = MP3Files;
+            DirectoryInfo di;
+
+            try
+            {
+                if (FreegalFilePath.Length > 0 && (di = new DirectoryInfo(FreegalFilePath)).Exists)
+                {
+                    MP3Files = di.GetFiles("*.mp3");
+                    statusPanel1.Content = "Ready...";
+                }
+                else
+                {
+                    MP3Files = new FileInfo[1];
+                    statusPanel1.Content = "Directory does not exist!";
+                }
+            }
+            catch (Exception ex)
+            {
+                statusPanel1.Content = ex.Message;
+            }
         }
 
 
         /// <summary>
         /// Display parts when new file is selected
         /// </summary>
-        private void fileListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void fileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            System.Windows.Controls.ListView tuneList = (System.Windows.Controls.ListView)sender;
-            string tune = ((FileInfo)tuneList.SelectedItems[0]).Name;
+            if (MP3Files.Length == 0) { NewFileName = ""; return; }
+
+            ListView tuneList = (ListView)sender;
+            if (tuneList.SelectedItems.Count == 0) { NewFileName = ""; return; }
+
             // TagLib Sharp
             TagLib.File file = TagLib.File.Create(((FileInfo)tuneList.SelectedItems[0]).FullName);
             string album = file.Tag.Album;
             string title = file.Tag.Title;
             uint track = file.Tag.Track;
 
-            // Parse the Freegal file name
-            int dot = tune.LastIndexOf(".");
-            string fileExt = tune.Substring(dot + 1);
-            int titleNumber = 0;
+            // Get file extension
+            string tune = ((FileInfo)tuneList.SelectedItems[0]).Name;
+            string fileExt = tune.Substring(tune.LastIndexOf(".") + 1);
 
-            tune = tune.Substring(0, dot);
-            string[] tuneParts = tune.Split('_');
-            int numParts = tuneParts.Length;
-            if (numParts > 0) txtArtist.Text = tuneParts[0];
-            if (numParts > 1) txtTitle.Text = tuneParts[1];
-            string[] tuneNumParts = tuneParts[2].Split('-');
-            if (tuneNumParts.Length > 0) txtXNumber.Text = tuneNumParts[0];
-            if (tuneNumParts.Length > 1) txtYNumber.Text = tuneNumParts[1];
-            if (tuneNumParts.Length > 2)
-            {
-                txtTitleNumber.Text = tuneNumParts[2];
-                if (!int.TryParse(tuneNumParts[2], out titleNumber)) titleNumber = 0;
-            }
-            if (numParts > 3) txtFileType.Text = tuneParts[3];
-            if (numParts > 4) txtSampleRate.Text = tuneParts[4];
-            txtExt.Text = fileExt;
-
-            string newName = string.Format("{0:D2} {1}.{2}", titleNumber, tuneParts[1], fileExt);
-            txtNewFileName.Text = newName;
-            txtNewFileName2.Text = string.Format("{0:D2} {1}.{2}", track, title, fileExt);
+            NewFileName = string.Format("{0:D2} {1}.{2}", track, title, fileExt);
         }
 
+
+        private void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
     }
 }
