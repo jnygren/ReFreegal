@@ -109,6 +109,25 @@ namespace ReFreegal
 
 
         /// <summary>
+        /// Display ReFreegal Help
+        /// </summary>
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("1. Navigate to Freegal file folder.\r\n2. Select file to rename (or all).\r\n3. Select 'Rename'.", 
+                            "ReFreegal Help", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+
+        /// <summary>
+        /// Close program
+        /// </summary>
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+
+        /// <summary>
         /// Support for INotifyPropertyChanged interface implementation
         /// </summary>
         private void OnPropertyChanged(string property)
@@ -116,5 +135,6 @@ namespace ReFreegal
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
+
     }
 }

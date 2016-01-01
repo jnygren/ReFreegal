@@ -4,9 +4,11 @@
         Title="ReFreegal Windows - Rename Freegal downloads" Height="500" Width="700">
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File"></MenuItem>
+            <MenuItem Header="_File">
+                <MenuItem x:Name="menuFileExit" Header="E_xit" Click="Exit_Click" />
+            </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem x:Name="menuHelpHelp" Header="_Help" />
+                <MenuItem x:Name="menuHelpHelp" Header="_Help" Click="Help_Click" />
                 <MenuItem x:Name="menuHelpAbout" Header="_About" Click="About_Click" />
             </MenuItem>
         </Menu>
