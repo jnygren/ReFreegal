@@ -6,7 +6,7 @@ using System.Configuration;
 using System.ComponentModel;
 using TagLib;
 
-namespace ReFreegalW
+namespace ReFreegal
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -16,9 +16,11 @@ namespace ReFreegalW
         private FileInfo[] _mp3Files;
         private string _filepath;
         private string _newfilename;
+        // Properties
         public FileInfo[] MP3Files { get { return _mp3Files; } set { _mp3Files = value; OnPropertyChanged("MP3Files"); } }
         public string FreegalFilePath { get { return _filepath; } set { _filepath = value; OnPropertyChanged("FreegalFilePath"); } }
         public string NewFileName { get { return _newfilename; } set { _newfilename = value; OnPropertyChanged("NewFileName"); } }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
@@ -96,6 +98,19 @@ namespace ReFreegalW
         }
 
 
+        /// <summary>
+        /// Display 'About' box
+        /// </summary>
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            About aboutBox = new About();
+            aboutBox.ShowDialog();
+        }
+
+
+        /// <summary>
+        /// Support for INotifyPropertyChanged interface implementation
+        /// </summary>
         private void OnPropertyChanged(string property)
         {
             if (PropertyChanged != null)
