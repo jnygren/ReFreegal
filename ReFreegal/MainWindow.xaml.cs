@@ -41,7 +41,7 @@ namespace ReFreegal
             browseDlg.SelectedPath = FreegalFilePath;
             browseDlg.Description = "Select Freegal folder";
             browseDlg.ShowNewFolderButton = false;
-            browseDlg.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            //browseDlg.RootFolder = System.Environment.SpecialFolder.MyComputer; // Sets root, but prevents 'SelectedPath' working.
             browseDlg.ShowDialog();
             FreegalFilePath = browseDlg.SelectedPath;
         }

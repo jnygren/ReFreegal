@@ -14,11 +14,12 @@ namespace ReFreegal
             " reads the ID3 tag in the .mp3 files, and generates a more informative" +
             " file name, and renames the music file.\r\n\r\n" +
             "\tToDo: \r\n" +
-            "Add 'Rename' and 'Rename All' buttons to UI.\r\n" +
-            "Implement file rename code.\r\n" +
-            "Add 'Move' or 'Copy' selection. (Path for copy.)\r\n" +
+            "DONE - Add 'Rename' and 'Rename All' buttons to UI.\r\n" +
+            "DONE - Implement file rename code.\r\n" +
+            "Add 'Move (Rename)' or 'Copy' selection.\r\n" +
+            "Add destination Path selection for 'Move' or 'Copy'.\r\n" +
             "Implement 'Save options' feature.\r\n" +
-            " \r\n" +
+            "DONE - Add installer (Setup) project.\r\n" +
             " \r\n" +
             " \r\n";
         public string AssemblyTitle { get { return Assembly.GetExecutingAssembly().GetName().Name; } }

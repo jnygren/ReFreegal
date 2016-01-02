@@ -5,6 +5,13 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReFreegal", "ReFreegal\ReFreegal.csproj", "{2A509E50-6BD3-4E7A-96E8-858EB9019A85}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{642F25BC-0178-446D-A114-59BF1EE7E366}"
+	ProjectSection(SolutionItems) = preProject
+		Setup\ReFreegal.iss = Setup\ReFreegal.iss
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Output", "Output", "{09C0223F-88A9-4FDC-A1F1-C9DCAF41B5EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +25,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{09C0223F-88A9-4FDC-A1F1-C9DCAF41B5EF} = {642F25BC-0178-446D-A114-59BF1EE7E366}
 	EndGlobalSection
 EndGlobal
