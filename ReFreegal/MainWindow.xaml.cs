@@ -48,29 +48,74 @@ namespace ReFreegal
 
 
         /// <summary>
+        /// Rename selected file
+        /// </summary>
+        private void Rename_Click(object sender, RoutedEventArgs e)
+        {
+            ListView tuneList = fileListView;
+            FileInfo srcFile = (FileInfo)tuneList.SelectedItems[0];
+            string newFileName = GetNewFileName(srcFile);
+            string dstFile = Path.Combine(srcFile.DirectoryName, newFileName);
+
+            //if (dstFile.Equals(srcFile.FullName))
+            if (System.IO.File.Exists(dstFile))
+                statusPanel1.Content = string.Format("[{0}] already renamed.", newFileName);
+            else
+            {
+                //File.Move(srcFile, dstFile);  // 'Move' is Rename (as well as Move)
+                System.IO.File.Copy(srcFile.FullName, dstFile);
+                MP3Files = RefreshFileList(FreegalFilePath);
+
+                statusPanel1.Content = string.Format("File renamed to [{0}].", newFileName);
+            }
+        }
+
+
+        /// <summary>
+        /// Rename all files in list
+        /// </summary>
+        private void RenameAll_Click(object sender, RoutedEventArgs e)
+        {
+            ListView tuneList = fileListView;
+            int fileCount = 0;
+
+            foreach (FileInfo srcFile in tuneList.Items)
+            {
+                string newFileName = GetNewFileName(srcFile);
+                string dstFile = Path.Combine(srcFile.DirectoryName, newFileName);
+
+                if (!System.IO.File.Exists(dstFile))
+                {
+                    System.IO.File.Copy(srcFile.FullName, dstFile);
+                    fileCount++;
+                    MP3Files = RefreshFileList(FreegalFilePath);
+                }
+            }
+            statusPanel1.Content = string.Format("{0} files renamed.", fileCount);
+        }
+
+
+        /// <summary>
         /// Update file list when folder is changed
         /// </summary>
         private void freegalPath_TextChanged(object sender, TextChangedEventArgs e)
         {
-            DirectoryInfo di;
+            if (string.IsNullOrEmpty(FreegalFilePath) || !Directory.Exists(FreegalFilePath))
+            {
+                MP3Files = new FileInfo[0];
+                statusPanel1.Content = "Error: Directory does not exist!";
+            }
+            else
+            {
+                MP3Files = RefreshFileList(FreegalFilePath);
 
-            try
-            {
-                if (FreegalFilePath.Length > 0 && (di = new DirectoryInfo(FreegalFilePath)).Exists)
-                {
-                    MP3Files = di.GetFiles("*.mp3");
+                if (MP3Files.Length > 0)
                     statusPanel1.Content = "Ready...";
-                }
                 else
-                {
-                    MP3Files = new FileInfo[1];
-                    statusPanel1.Content = "Directory does not exist!";
-                }
+                    statusPanel1.Content = "No files to rename.";
             }
-            catch (Exception ex)
-            {
-                statusPanel1.Content = ex.Message;
-            }
+
+            btnRenameAll.IsEnabled = MP3Files.Length > 0;
         }
 
 
@@ -79,22 +124,57 @@ namespace ReFreegal
         /// </summary>
         private void fileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MP3Files.Length == 0) { NewFileName = ""; return; }
+            NewFileName = "";
 
-            ListView tuneList = (ListView)sender;
-            if (tuneList.SelectedItems.Count == 0) { NewFileName = ""; return; }
+            if (MP3Files.Length > 0)
+            {
+                ListView tuneList = (ListView)sender;
+                if (tuneList.SelectedItems.Count > 0)
+                {
+                    NewFileName = GetNewFileName((FileInfo)tuneList.SelectedItems[0]);
+                }
+            }
+            btnRename.IsEnabled = !string.IsNullOrEmpty(NewFileName);
+        }
 
+
+        /// <summary>
+        /// Get new filename for file with Freegal filename
+        /// </summary>
+        private string GetNewFileName(FileInfo fileInfo)
+        {
             // TagLib Sharp
-            TagLib.File file = TagLib.File.Create(((FileInfo)tuneList.SelectedItems[0]).FullName);
+            TagLib.File file = TagLib.File.Create(fileInfo.FullName);
             string album = file.Tag.Album;
             string title = file.Tag.Title;
             uint track = file.Tag.Track;
 
             // Get file extension
-            string tune = ((FileInfo)tuneList.SelectedItems[0]).Name;
-            string fileExt = tune.Substring(tune.LastIndexOf(".") + 1);
+            string fileExt = fileInfo.Extension.Substring(1);
 
-            NewFileName = string.Format("{0:D2} {1}.{2}", track, title, fileExt);
+            return string.Format("{0:D2} {1}.{2}", track, title, fileExt);
+        }
+
+
+        /// <summary>
+        /// Get update for MP3 Files list
+        /// </summary>
+        private FileInfo[] RefreshFileList(string filePath)
+        {
+            FileInfo[] fileList = new FileInfo[0];
+            DirectoryInfo di = new DirectoryInfo(filePath);
+
+            try
+            {
+                if (di.Exists)
+                    fileList = di.GetFiles("*.mp3");
+            }
+            catch (Exception ex)
+            {
+                string error = ex.Message;
+            }
+
+            return fileList;
         }
 
 
