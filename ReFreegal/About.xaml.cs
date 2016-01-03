@@ -20,6 +20,10 @@ namespace ReFreegal
             "Add destination Path selection for 'Move' or 'Copy'.\r\n" +
             "Implement 'Save options' feature.\r\n" +
             "DONE - Add installer (Setup) project.\r\n" +
+            "DONE - Check for/fix invalid filenames.\r\n" +
+            "folder browser - scroll into view. \r\n" +
+            "folder browser - click to select. \r\n" +
+            "DONE - Add program icon.\r\n" +
             " \r\n" +
             " \r\n";
         public string AssemblyTitle { get { return Assembly.GetExecutingAssembly().GetName().Name; } }

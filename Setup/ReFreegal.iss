@@ -13,7 +13,7 @@
 ; OutputBaseFilename - Name of setup (.exe) file.
 [Setup]
 AppName=ReFreegal
-AppVersion=1.1
+AppVersion=1.2
 DefaultDirName={pf}\ReFreegal
 DefaultGroupName=ReFreegal
 SourceDir="..\ReFreegal\bin\Release"

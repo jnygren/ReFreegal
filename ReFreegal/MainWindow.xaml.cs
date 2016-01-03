@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Configuration;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using TagLib;
 
 namespace ReFreegal
@@ -38,10 +39,11 @@ namespace ReFreegal
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog browseDlg = new System.Windows.Forms.FolderBrowserDialog();
-            browseDlg.SelectedPath = FreegalFilePath;
+            browseDlg.Reset();
             browseDlg.Description = "Select Freegal folder";
             browseDlg.ShowNewFolderButton = false;
             //browseDlg.RootFolder = System.Environment.SpecialFolder.MyComputer; // Sets root, but prevents 'SelectedPath' working.
+            browseDlg.SelectedPath = FreegalFilePath;
             browseDlg.ShowDialog();
             FreegalFilePath = browseDlg.SelectedPath;
         }
@@ -151,6 +153,14 @@ namespace ReFreegal
 
             // Get file extension
             string fileExt = fileInfo.Extension.Substring(1);
+
+            // Validate filename (replace invalid chars with '_'.)
+            if (title.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            {
+                // Use string(char[]) constructor to convert char[] to string.
+                string pattern = "[" + new string(Path.GetInvalidFileNameChars()) + "]";
+                title = Regex.Replace(title, pattern, "_");
+            }
 
             return string.Format("{0:D2} {1}.{2}", track, title, fileExt);
         }

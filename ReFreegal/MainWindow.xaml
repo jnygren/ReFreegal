@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ReFreegal.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ReFreegal Windows - Rename Freegal downloads" Width="700" Height="400" MinWidth="635" MinHeight="250" >
+        Title="ReFreegal Windows - Rename Freegal downloads" Icon="ReFreegal.ico" Width="700" Height="400" MinWidth="635" MinHeight="250" >
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
