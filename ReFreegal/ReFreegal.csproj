@@ -115,9 +115,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Oxygen-Icons.org-Oxygen-Apps-preferences-desktop-icons.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ReFreegal.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
