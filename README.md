@@ -13,11 +13,11 @@ The music files downloaded through Freegal are formatted like this:
   TrevorMorris_WarIsComing_G010003148378y_1_1-256K_44S_2C_cbr1x.mp3
 
 This is not how I wanted my files named. **ReFreegal** parses the Freegal-created filenames and reads the ID3 tag in the files to produce a more readable name. For example: 
-> 01 War Is Coming.mp3
-  02 Battle of Brothers.mp3
-  03 Bjorn's Choice.mp3
-  04 Vikings Return Home.mp3
-  05 Rollo's Trial.mp3
+> 01 War Is Coming.mp3<br />
+  02 Battle of Brothers.mp3<br />
+  03 Bjorn's Choice.mp3<br />
+  04 Vikings Return Home.mp3<br />
+  05 Rollo's Trial.mp3<br />
   06 Ragnar Says Goodbye to Gyda.mp3
 
 Note: The current version actually _copies_ the original files, and renames the copies. (Safety First!) In a future version, I intend to add the ability to specify a different destination to move/rename to, and make deletion/retention of the original files optional. The copied/renamed files maintain the original file timestamps.
